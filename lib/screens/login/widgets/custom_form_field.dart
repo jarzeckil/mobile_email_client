@@ -15,7 +15,9 @@ class CustomFormField extends StatelessWidget {
       },
       decoration: InputDecoration(
         hintText: hintText,
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
       ),
       obscureText: enableHideChar,
       validator: (value) {
