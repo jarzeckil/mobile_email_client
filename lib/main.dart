@@ -1,8 +1,7 @@
 import 'app_imports.dart';
-import 'screens/screens_imports.dart';
 import 'utils/utils_imports.dart';
 
-void main() {
+void main() async{
   runApp(MyApp());
 }
 
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/home',
       onGenerateRoute: RouteGenerator.generateRoute,
       debugShowCheckedModeBanner: false,
       title: 'Email App',

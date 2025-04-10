@@ -28,21 +28,21 @@ class _SignupPageState extends State<SignupPage> {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  child: CustomFormField(false, 'Username'),
+                  //child: CustomFormField(false, 'Username'),
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    child: CustomFormField(true, 'Password')
+                    //child: CustomFormField(true, 'Password')
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    child: CustomFormField(true, 'Verify password')
+                    //child: CustomFormField(true, 'Verify password')
                 ),
 
                 Padding(

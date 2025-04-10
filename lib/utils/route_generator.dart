@@ -4,8 +4,6 @@ import '../app_imports.dart';
 class RouteGenerator{
   static Route<dynamic> generateRoute(RouteSettings settings){
 
-    final args = settings.arguments;
-
     switch(settings.name){
       case '/':
         return MaterialPageRoute(builder: (_) => LoginPage());
@@ -13,6 +11,8 @@ class RouteGenerator{
         return MaterialPageRoute(builder: (_) => SignupPage());
       case '/home':
         return MaterialPageRoute(builder: (_) => HomePage());
+      case '/addaccount':
+        return MaterialPageRoute(builder: (_) => AddAccountPage());
       default:
         return _errorRoute();
     }

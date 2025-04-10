@@ -1,4 +1,5 @@
 import 'package:mobile_email_client/app_imports.dart';
+import 'widgets/home_widgets_imports.dart' as home_widgets;
 
 class HomePage extends StatefulWidget{
   @override
@@ -13,11 +14,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       appBar: AppBar(
 
       ),
-      drawer: const NavigationDrawer(),
+      drawer: const home_widgets.NavigationDrawer(),
       body: Column(
         children: [
 
@@ -28,17 +28,3 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class NavigationDrawer extends StatelessWidget{
-
-  const NavigationDrawer({super.key});
-
-  @override
-  Widget build(BuildContext context) => Drawer(
-    child: ListView(
-      children: [
-
-      ],
-    ),
-  );
-
-}

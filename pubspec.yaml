@@ -8,10 +8,13 @@ version: 0.0.1+1
 environment:
   sdk: ^3.7.2
 dependencies:
+  enough_mail: ^2.1.5
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  shared_preferences: ^2.5.3
+  encrypt: ^5.0.1
 
 dev_dependencies:
   flutter_test:

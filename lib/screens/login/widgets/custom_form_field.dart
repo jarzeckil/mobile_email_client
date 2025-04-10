@@ -4,12 +4,14 @@ class CustomFormField extends StatelessWidget {
 
   final bool enableHideChar;
   final String hintText;
+  final TextEditingController myController;
 
-  CustomFormField(this.enableHideChar, this.hintText);
+  CustomFormField(this.enableHideChar, this.hintText, this.myController);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: myController,
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },

@@ -26,14 +26,14 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                child: CustomFormField(false, 'Username'),
+                //child: CustomFormField(false, 'Username'),
               ),
               SizedBox(
                 height: 20,
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
-                child: CustomFormField(true, 'Password')
+                //child: CustomFormField(true, 'Password')
               ),
 
               Padding(
