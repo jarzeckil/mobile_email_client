@@ -1,4 +1,5 @@
 import 'package:mobile_email_client/app_imports.dart';
+import 'package:mobile_email_client/service/service_imports.dart';
 
 class NavigationDrawer extends StatelessWidget {
   const NavigationDrawer({super.key});
@@ -53,6 +54,15 @@ class NavigationDrawer extends StatelessWidget {
                   ),
                 );
               }
+        ),
+        ListTile(
+          leading: Icon(Icons.sync),
+          title: Text('Start service'),
+          onTap: () async {
+            final mailService = MailService();
+            await mailService.connectService();
+            await mailService.listen();
+          },
         ),
       ],
     ),
