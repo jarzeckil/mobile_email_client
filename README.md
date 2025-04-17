@@ -1,16 +1,7 @@
-# mobile_email_client
+# MailApp - Flutter Email Application
 
-android email app
+A simple, yet powerful mail application built using Flutter. This application allows users to manage emails, send and receive messages, and interact with mail servers. The app is currently in development, and new features are being added regularly.
 
-## Getting Started
+## 🚧 Project Status
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project is **under development**. The main functionalities are in the works, and some features might be incomplete or not fully functional.
