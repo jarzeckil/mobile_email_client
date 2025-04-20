@@ -1,11 +1,37 @@
+analyzer:
+  errors:
+    avoid_print: ignore
+    prefer_collection_literals: ignore
+    prefer_interpolation_to_compose_strings: ignore
+    sort_constructors_first: ignore
+    sort_unnamed_constructors_first: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
-    avoid_print: false
-    prefer_const_constructors_in_immutables: false
-    prefer_const_constructors: false
-    prefer_const_literals_to_create_immutables: false
-    prefer_final_fields: false
-    unnecessary_breaks: true
-    use_key_in_widget_constructors: false
+    #- avoid_print: false
+    #prefer_const_constructors_in_immutables: false
+    #prefer_const_constructors: false
+    #prefer_const_literals_to_create_immutables: false
+    #prefer_final_fields: false
+    #unnecessary_breaks: true
+    #use_key_in_widget_constructors: false
+    # 🔹 Ogólne dobre praktyki
+    - always_declare_return_types
+    - prefer_final_locals # zmienne wewnątrz metod jako final jeśli się nie zmieniają
+    - prefer_final_fields # podobnie, ale dla pól
+    - unnecessary_breaks # niepotrzebne breaki = bałagan
+
+    # 🔹 Consty – tylko kiedy to ma sens
+    - prefer_const_constructors
+    - prefer_const_literals_to_create_immutables
+    - prefer_const_constructors_in_immutables
+
+    # 🔹 Flutter-specific
+    - use_key_in_widget_constructors # żeby widgety się dobrze diffowały
+    - avoid_unnecessary_containers # niepotrzebny widget = performance
+
+    # 🔹 Czytelność i porządek
+    - sort_constructors_first
+    - annotate_overrides # @override dla nadpisanych metod
+    - type_annotate_public_apis # nie pomijaj typów w publicznych metodach

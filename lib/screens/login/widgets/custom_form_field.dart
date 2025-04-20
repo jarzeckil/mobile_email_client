@@ -6,7 +6,7 @@ class CustomFormField extends StatelessWidget {
   final String hintText;
   final TextEditingController myController;
 
-  CustomFormField(this.enableHideChar, this.hintText, this.myController);
+  const CustomFormField(this.enableHideChar, this.hintText, this.myController, {super.key});
 
   @override
   Widget build(BuildContext context) {

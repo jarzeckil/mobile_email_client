@@ -6,9 +6,9 @@ class NavigationDrawer extends StatelessWidget {
 
   Future<String> _getData() async {
     final prefs = await SharedPreferences.getInstance();
-    Object? mail = await prefs.get('mail');
-    Object? domain = await prefs.get('domain');
-    Object? password = await prefs.get('password');
+    final Object? mail = prefs.get('mail');
+    final Object? domain = prefs.get('domain');
+    final Object? password = prefs.get('password');
 
     return 'Mail: $mail Domain: $domain Password: $password';
   }
@@ -18,15 +18,15 @@ class NavigationDrawer extends StatelessWidget {
     child: ListView(
       children: [
         ListTile(
-          leading: Icon(Icons.add),
-          title: Text('Add account'),
+          leading: const Icon(Icons.add),
+          title: const Text('Add account'),
           onTap: () {
             Navigator.of(context).pushNamed('/addaccount');
           },
         ),
         ListTile(
-          leading: Icon(Icons.account_circle),
-          title: Text('Get account information'),
+          leading: const Icon(Icons.account_circle),
+          title: const Text('Get account information'),
           onTap: () {
                 showDialog<String>(
                   context: context,
@@ -39,7 +39,7 @@ class NavigationDrawer extends StatelessWidget {
                           if(snapshot.connectionState == ConnectionState.waiting){
                             return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
-                            return Text('Error');
+                            return const Text('Error');
                           } else {
                             return Text(snapshot.data ?? 'No data');
                           }
@@ -56,12 +56,27 @@ class NavigationDrawer extends StatelessWidget {
               }
         ),
         ListTile(
-          leading: Icon(Icons.sync),
-          title: Text('Start service'),
+          leading: const Icon(Icons.sync),
+          title: const Text('Start service'),
           onTap: () async {
             final mailService = MailService();
-            await mailService.connectService();
-            await mailService.listen();
+            await mailService.start();
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.stop),
+          title: const Text('Stop service'),
+          onTap: () async {
+            final mailService = MailService();
+            await mailService.stop();
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.delete_forever),
+          title: const Text('Delete database'),
+          onTap: () async {
+            final db = DatabaseHelper();
+            db.deleteDatabaseFile();
           },
         ),
       ],

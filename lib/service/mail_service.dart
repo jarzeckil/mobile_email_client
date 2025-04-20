@@ -1,55 +1,40 @@
 import 'package:mobile_email_client/app_imports.dart';
+import 'package:mobile_email_client/service/service_imports.dart';
 
 class MailService {
 
-  factory MailService() => _this;
+  static MailService? _service;
   MailService._();
-  static final MailService _this = MailService._();
+
+  factory MailService(){
+    _service ??= MailService._();
+    return _service!;
+  }
 
   String userName = '';
   String password = '';
   String domain = '';
 
-  var mailClient;
+  static late MailClient mailClient;
+  static bool connected = false;
 
-  Future<void> _loadData() async{
+  Future<void> _loadData() async {
     final storage = await SharedPreferences.getInstance();
-    userName = (await storage.get('mail')) as String;
-    domain = (await storage.get('domain')) as String;
-    password = (await storage.get('password')) as String;
+    userName = (storage.get('mail')) as String;
+    domain = (storage.get('domain')) as String;
+    password = (storage.get('password')) as String;
   }
 
-  /// Builds a simple example message
-  MimeMessage buildMessage() {
-    final builder =
-        MessageBuilder.prepareMultipartAlternativeMessage(
-            plainText: 'Hello world!',
-            htmlText: '<p>Hello world!</p>',
-          )
-          ..from = [MailAddress('Personal Name', '$userName@$domain')]
-          ..to = [
-            MailAddress('Recipient Personal Name', 'arax908@gmail.com'),
-            MailAddress('Other Recipient', 'other@domain.com'),
-          ];
-    return builder.buildMimeMessage();
+  Future<void> start() async {
+    await connectService();
+    await listen();
   }
 
-  /// Builds an example message with attachment
-  Future<MimeMessage> buildMessageWithAttachment() async {
-    final builder =
-        MessageBuilder()
-          ..from = [MailAddress('Personal Name', 'sender@domain.com')]
-          ..to = [
-            MailAddress('Recipient Personal Name', 'recipient@domain.com'),
-            MailAddress('Other Recipient', 'other@domain.com'),
-          ]
-          ..addMultipartAlternative(
-            plainText: 'Hello world!',
-            htmlText: '<p>Hello world!</p>',
-          );
-    final file = File.fromUri(Uri.parse('file://./document.pdf'));
-    await builder.addFile(file, MediaSubtype.applicationPdf.mediaType);
-    return builder.buildMimeMessage();
+  Future<void> stop() async {
+    if(connected){
+      connected = false;
+      mailClient.disconnect();
+    }
   }
 
   Future<void> connectService() async {
@@ -69,10 +54,10 @@ class MailService {
       config: config,
       userName: userName,
     );
+    connected = true;
     mailClient = MailClient(account, isLogEnabled: true);
   }
 
-  /// High level mail API example
   Future<void> listen() async {
     try {
       await mailClient.connect();
@@ -82,17 +67,17 @@ class MailService {
       );
       print(mailboxes);
       await mailClient.selectInbox();
-      final messages = await mailClient.fetchMessages(count: 20);
-      messages.forEach(printMessage);
+
+      final messages = await mailClient.fetchMessages(count: 3);
+
+      final db = DatabaseHelper();
+      messages.forEach(db.insertMail);
+
       mailClient.eventBus.on<MailLoadEvent>().listen((event) {
         print('New message at ${DateTime.now()}:');
-        printMessage(event.message);
-        print(messages.elementAt(0).body);
+        //printMessage(event.message);
       });
       await mailClient.startPolling();
-      // generate and send email:
-      //final mimeMessage = buildMessage();
-      //await mailClient.sendMessage(mimeMessage);
     } on MailException catch (e) {
       print('High level API failed with $e');
     }

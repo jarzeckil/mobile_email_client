@@ -1,5 +1,4 @@
 import 'package:mobile_email_client/app_imports.dart';
-import 'widgets/custom_form_field.dart';
 
 
 class SignupPage extends StatefulWidget{
@@ -30,14 +29,14 @@ class _SignupPageState extends State<SignupPage> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   //child: CustomFormField(false, 'Username'),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
                     //child: CustomFormField(true, 'Password')
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -58,11 +57,11 @@ class _SignupPageState extends State<SignupPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Please log in now'), duration: Duration(seconds: 1)),
                           ).closed.then((_) {
-                            Navigator.of(context).pushNamed('/');
+                            //Navigator.of(context).pushNamed('/');
                           });
                         }
                       },
-                      child: Text('Sign Up'),
+                      child: const Text('Sign Up'),
                     ),
                   ),
                 ),
@@ -72,7 +71,7 @@ class _SignupPageState extends State<SignupPage> {
                     children: [
                       TextSpan(
                         text: 'Sign In',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.blue,
                         ),
                         recognizer: TapGestureRecognizer()..onTap = () {
