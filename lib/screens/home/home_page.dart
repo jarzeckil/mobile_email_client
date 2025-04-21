@@ -1,6 +1,7 @@
 import 'package:mobile_email_client/app_imports.dart';
 import 'package:mobile_email_client/screens/home/widgets/mail_card.dart';
 import 'widgets/home_widgets_imports.dart' as home_widgets;
+import 'package:mobile_email_client/service/service_imports.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,18 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int selectedindex = 0;
 
+  final db = DatabaseHelper();
+  late List<Map<String, dynamic>> mapList;
+  List<MailModel> mails = List.empty();
+
+  @override
+  void initState() {
+    super.initState();
+    print("initing home");
+    //TODO
+    // OBLSUGA SNAPSHOTÓW
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +34,15 @@ class _HomePageState extends State<HomePage> {
         children: [
           Flexible(
             child: ListView(
-              children: [for (int i = 0; i < 20; i++) const MailCard(subject: '.', date: '.', sender: '.', body: '.',)],
+              children: [
+                for (MailModel mail in mails)
+                  MailCard(
+                    subject: mail.subject,
+                    date: mail.date,
+                    sender: mail.sender,
+                    body: ",",
+                  ),
+              ],
             ),
           ),
         ],

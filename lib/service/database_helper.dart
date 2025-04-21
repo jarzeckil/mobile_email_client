@@ -69,6 +69,28 @@ class DatabaseHelper {
     }
   }
 
+  Future<int> getEntityCount() async {
+    final db = await database;
+    final String query = "SELECT COUNT(*) AS mailCount FROM $mailTable";
+
+    final queryResult = await db.rawQuery(query);
+
+    final result = queryResult.first['mailCount'];
+
+    return result as int;
+  }
+
+  Future<int> getMaxUid() async {
+    final db = await database;
+    final String query = "SELECT MAX($colUid) AS maxUid FROM $mailTable";
+
+    final queryResult = await db.rawQuery(query);
+
+    final result = queryResult.first['maxUid'];
+
+    return result as int;
+  }
+
   Future<List<Map<String, dynamic>>> getMailMapList(int n) async {
     final Database db = await database;
 
@@ -84,12 +106,10 @@ class DatabaseHelper {
 
   Future<int> insertMail(MimeMessage message) async {
     final Database db = await database;
-    final mail = Mail(message);
+    final mail = MailModel(message);
     final uid = message.uid;
     print("Inserting: $uid");
     final result = await db.insert(mailTable, mail.toMap());
     return result;
   }
-
-
 }

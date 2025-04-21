@@ -1,6 +1,6 @@
 import 'package:enough_mail/enough_mail.dart';
 
-class Mail {
+class MailModel {
   //TODO flags
 
   late int _uid;
@@ -9,13 +9,23 @@ class Mail {
   late String _subject;
   late String _plainText;
 
-  Mail(MimeMessage message) {
+  MailModel(MimeMessage message) {
     _uid = message.uid ?? -1;
     _date = message.decodeDate()!.toIso8601String();
     _sender = message.sender.toString();
     _subject = message.decodeSubject() ?? '';
     _plainText = message.decodeTextPlainPart() ?? '';
   }
+
+  int get uid => _uid;
+
+  String get date => _date;
+
+  String get sender => _sender;
+
+  String get subject => _subject;
+
+  String get plainText => _plainText;
 
   Map<String, dynamic> toMap() {
     final map = Map<String, dynamic>();
@@ -29,7 +39,7 @@ class Mail {
     return map;
   }
 
-  Mail.fromMapObject(Map<String, dynamic> map) {
+  MailModel.fromMapObject(Map<String, dynamic> map) {
     _uid = map['uid'];
     _date = map['date'];
     _sender = map['sender'];
