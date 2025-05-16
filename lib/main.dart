@@ -1,8 +1,13 @@
+import 'package:mobile_email_client/service/service_imports.dart';
+import 'package:provider/provider.dart';
+
 import 'app_imports.dart';
 import 'utils/utils_imports.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(create: (_) => DatabaseHelper(), child: MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {

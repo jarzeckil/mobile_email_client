@@ -6,7 +6,7 @@ import 'package:mobile_email_client/service/models/mail_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseHelper {
+class DatabaseHelper extends ChangeNotifier {
   static DatabaseHelper? _databaseHelper;
   DatabaseHelper._();
 
@@ -110,6 +110,21 @@ class DatabaseHelper {
     final uid = message.uid;
     print("Inserting: $uid");
     final result = await db.insert(mailTable, mail.toMap());
+
+    loadMails();
+
     return result;
+  }
+
+  List<MailModel> _mails = [];
+
+  List<MailModel> get mails => _mails;
+
+  Future<void> loadMails() async {
+    print("loading");
+    final data = await getMailMapList(-1);
+    _mails =
+        data.map((e) => MailModel.fromMapObject(e)).toList(); //TODO zapytać
+    notifyListeners();
   }
 }

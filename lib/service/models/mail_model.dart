@@ -46,4 +46,9 @@ class MailModel {
     _subject = map['subject'];
     _plainText = map['plainText'];
   }
+
+  @override
+  String toString() {
+    return "uid: $_uid, date: $_date, sender: $_sender, subject: $_subject";
+  }
 }
