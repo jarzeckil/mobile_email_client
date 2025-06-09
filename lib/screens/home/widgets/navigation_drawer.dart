@@ -59,24 +59,21 @@ class NavigationDrawer extends StatelessWidget {
           leading: const Icon(Icons.sync),
           title: const Text('Start service'),
           onTap: () async {
-            final mailService = MailService();
-            await mailService.start();
+            await MailService().start();
           },
         ),
         ListTile(
           leading: const Icon(Icons.stop),
           title: const Text('Stop service'),
           onTap: () async {
-            final mailService = MailService();
-            await mailService.stop();
+            await MailService().stop();
           },
         ),
         ListTile(
           leading: const Icon(Icons.delete_forever),
           title: const Text('Delete database'),
           onTap: () async {
-            final db = DatabaseHelper();
-            db.deleteDatabaseFile();
+            DatabaseHelper().deleteDatabaseFile();
           },
         ),
       ],

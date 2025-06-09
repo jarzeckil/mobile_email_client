@@ -1,3 +1,4 @@
+
 import 'package:enough_mail/enough_mail.dart';
 
 class MailModel {
@@ -12,7 +13,7 @@ class MailModel {
   MailModel(MimeMessage message) {
     _uid = message.uid ?? -1;
     _date = message.decodeDate()!.toIso8601String();
-    _sender = message.sender.toString();
+    _sender = message.fromEmail ?? "unknown";
     _subject = message.decodeSubject() ?? '';
     _plainText = message.decodeTextPlainPart() ?? '';
   }

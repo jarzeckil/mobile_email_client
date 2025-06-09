@@ -94,7 +94,7 @@ class DatabaseHelper extends ChangeNotifier {
   Future<List<Map<String, dynamic>>> getMailMapList(int n) async {
     final Database db = await database;
 
-    String query = "SELECT * FROM $mailTable ORDER BY $colDate ASC";
+    String query = "SELECT * FROM $mailTable ORDER BY $colDate DESC";
 
     if (n != -1) {
       query += "LIMIT $n";
@@ -104,16 +104,23 @@ class DatabaseHelper extends ChangeNotifier {
     return result;
   }
 
-  Future<int> insertMail(MimeMessage message) async {
+  Future<void> insertMail(MimeMessage message) async {
     final Database db = await database;
     final mail = MailModel(message);
     final uid = message.uid;
     print("Inserting: $uid");
-    final result = await db.insert(mailTable, mail.toMap());
 
-    loadMails();
+    String existingQuery = "SELECT * FROM $mailTable WHERE uid = $uid LIMIT 1";
+    final existing = await db.rawQuery(existingQuery);
 
-    return result;
+    if(existing.isEmpty) {
+      await db.insert(mailTable, mail.toMap());
+      loadMails();
+    }
+    else{
+      print("Object $uid exists. Skipping.");
+    }
+
   }
 
   List<MailModel> _mails = [];

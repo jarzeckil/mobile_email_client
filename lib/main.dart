@@ -5,8 +5,14 @@ import 'app_imports.dart';
 import 'utils/utils_imports.dart';
 
 void main() async {
+
   runApp(
-    ChangeNotifierProvider(create: (_) => DatabaseHelper(), child: MyApp()),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DatabaseHelper()..loadMails()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

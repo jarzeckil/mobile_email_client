@@ -64,18 +64,10 @@ class MailService {
       await mailClient.selectInbox();
 
       final db = DatabaseHelper();
-      final mailCount = await db.getEntityCount();
 
-      if (mailCount != 0) {
-        final maxUid = await db.getMaxUid();
-        final messages = await mailClient.fetchMessageSequence(
-          MessageSequence.fromId(maxUid + 1, isUid: true),
-        );
-        messages.forEach(db.insertMail);
-      } else {
-        final messages = await mailClient.fetchMessages(count: 100);
-        messages.forEach(db.insertMail);
-      }
+
+      final messages = await mailClient.fetchMessages(count: 100);
+      messages.forEach(db.insertMail);
 
       mailClient.eventBus.on<MailLoadEvent>().listen((event) {
         print('New message at ${DateTime.now()}:');

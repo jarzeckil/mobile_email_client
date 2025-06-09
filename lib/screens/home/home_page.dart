@@ -13,16 +13,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int selectedindex = 0;
+  var mails;
+
+  @override
+  void initState() {
+    super.initState();
+    MailService().start();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('SheMail')),
       drawer: const home_widgets.NavigationDrawer(),
-      body: Consumer(
-        builder: (context, provider, _) {
-          Provider.of<DatabaseHelper>(context, listen: false).loadMails();
-          final mails = DatabaseHelper().mails;
+      body: Consumer<DatabaseHelper>(
+        builder: (context, databasehelper, _) {
+          mails = databasehelper.mails;
 
           if (mails.isEmpty) {
             return const Center(child: Text("No mails yet"));
@@ -31,24 +37,24 @@ class _HomePageState extends State<HomePage> {
             itemCount: mails.length,
             itemBuilder: (context, index) {
               final mail = mails[index];
-              return MailCard(
+              return MailCard.noBody(
                 subject: mail.subject,
                 date: mail.date,
                 sender: mail.sender,
-                body: ",",
+                onTap: () {
+                  Navigator.of(context).pushNamed(
+                    '/mail_reader',
+                    arguments: {
+                      'uid': mail.uid,
+                      'date': mail.date,
+                      'sender': mail.sender,
+                      'subject': mail.subject,
+                      'plainText': mail.plainText,
+                    },
+                  );
+                },
               );
             },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Provider.of<DatabaseHelper>(context, listen: false).loadMails();
-          print(
-            Provider.of<DatabaseHelper>(
-              context,
-              listen: false,
-            ).mails[0].toString(),
           );
         },
       ),

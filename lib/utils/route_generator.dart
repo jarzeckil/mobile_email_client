@@ -12,6 +12,25 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const HomePage());
       case '/addaccount':
         return MaterialPageRoute(builder: (_) => const AddAccountPage());
+
+
+      case '/mail_reader':
+        final args = settings.arguments as Map<String, dynamic>?;
+
+        if (args == null) {
+          return _errorRoute();
+        }
+
+        return MaterialPageRoute(
+          builder: (_) => MailReaderPage(
+            uid: args['uid'],
+            date: args['date'],
+            sender: args['sender'],
+            subject: args['subject'],
+            plainText: args['plainText'],
+          ),
+        );
+
       default:
         return _errorRoute();
     }
