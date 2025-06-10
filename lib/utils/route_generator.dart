@@ -1,3 +1,4 @@
+
 import '../screens/screens_imports.dart';
 import '../app_imports.dart';
 
@@ -13,6 +14,8 @@ class RouteGenerator {
       case '/addaccount':
         return MaterialPageRoute(builder: (_) => const AddAccountPage());
 
+      case '/mail_writer':
+        return MaterialPageRoute(builder: (_) => const MailCreatorPage());
 
       case '/mail_reader':
         final args = settings.arguments as Map<String, dynamic>?;

@@ -2,6 +2,8 @@ import 'package:mobile_email_client/app_imports.dart';
 import 'package:mobile_email_client/screens/home/widgets/mail_card.dart';
 import 'package:mobile_email_client/service/service_imports.dart';
 import 'package:provider/provider.dart';
+import '../../service/models/mail_out_model.dart';
+import '../mail/mail_creator_page.dart';
 import 'widgets/home_widgets_imports.dart' as home_widgets;
 
 class HomePage extends StatefulWidget {
@@ -56,6 +58,19 @@ class _HomePageState extends State<HomePage> {
               );
             },
           );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.create),
+        onPressed: () async {
+          final mail = await Navigator.push<MailOutModel>(
+            context,
+            MaterialPageRoute(builder: (_) => const MailCreatorPage()),
+          );
+          if (mail != null) {
+            print(mail.title);
+            MailService().send(mail);
+          }
         },
       ),
     );

@@ -13,6 +13,15 @@ class NavigationDrawer extends StatelessWidget {
     return 'Mail: $mail Domain: $domain Password: $password';
   }
 
+  Future<void> _logOut() async{
+    final prefs = await SharedPreferences.getInstance();
+    await DatabaseHelper().deleteDatabaseFile();
+
+    await prefs.clear();
+    await MailService().stop();
+
+  }
+
   @override
   Widget build(BuildContext context) => Drawer(
     child: ListView(
@@ -55,7 +64,7 @@ class NavigationDrawer extends StatelessWidget {
                 );
               }
         ),
-        ListTile(
+        /*ListTile(
           leading: const Icon(Icons.sync),
           title: const Text('Start service'),
           onTap: () async {
@@ -68,12 +77,19 @@ class NavigationDrawer extends StatelessWidget {
           onTap: () async {
             await MailService().stop();
           },
-        ),
-        ListTile(
+        ),*/
+        /*ListTile(
           leading: const Icon(Icons.delete_forever),
           title: const Text('Delete database'),
           onTap: () async {
             DatabaseHelper().deleteDatabaseFile();
+          },
+        ),*/
+        ListTile(
+          leading: const Icon(Icons.logout),
+          title: const Text('Log out'),
+          onTap: () async {
+            _logOut();
           },
         ),
       ],

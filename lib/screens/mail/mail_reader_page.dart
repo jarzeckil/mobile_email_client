@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:mobile_email_client/app_imports.dart';
 
 class MailReaderPage extends StatelessWidget {
   final int uid;

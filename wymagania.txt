@@ -1,0 +1,28 @@
+Must have
+- Wysyłanie maili za pomocą protokołu SMTP
+- Odbieranie maili za pomocą protokołu IMAP
+- Przeglądanie maili
+- Uwierzytelnianie użytkownika
+
+Should have
+- Odpowiadanie na maile
+- Obsługa wielu kont mailowych
+- Wyszukiwanie maili po nadawcy
+- Obsługa załączników
+- Powiadomienia o nowych mailach
+- Różne zakładki - wysłane/odebrane/…
+
+Could have
+- Preferencje użytkowników przechowywane w bazie danych
+    ○ Motyw
+    ○ Czcionka
+    ○ ?
+- Oznaczanie maili jako przeczytane/nieprzeczytane
+- Dodawanie maili do ulubionych
+- Filtrowanie spamu
+- Sugerowanie adresata na podstawie wcześniejszych maili
+- Wyszukiwanie maili po treści
+
+Won't have
+- Wbudowany czat
+- Zaawansowane filtrowanie - np. podział na społeczności, oferty, główne

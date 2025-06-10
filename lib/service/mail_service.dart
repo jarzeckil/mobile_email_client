@@ -1,4 +1,5 @@
 import 'package:mobile_email_client/app_imports.dart';
+import 'package:mobile_email_client/service/models/mail_out_model.dart';
 import 'package:mobile_email_client/service/service_imports.dart';
 
 class MailService {
@@ -53,6 +54,7 @@ class MailService {
       config: config,
       userName: userName,
     );
+
     connected = true;
     mailClient = MailClient(account, isLogEnabled: true);
   }
@@ -77,6 +79,37 @@ class MailService {
     } on MailException catch (e) {
       print('High level API failed with $e');
     }
+  }
+
+  Future<void> send(MailOutModel mail) async {
+    try {
+      if(!mailClient.isConnected){
+        await mailClient.connect();
+      }
+      print('sender connected');
+
+      final mimeMessage = buildMessage(mail);
+      await mailClient.sendMessage(mimeMessage);
+      final uid = mimeMessage.uid;
+      print('$uid sent');
+
+    } on MailException catch (e) {
+      print('High level API failed with $e');
+    }
+  }
+
+  MimeMessage buildMessage(MailOutModel mail) {
+    final textBody = mail.body;
+    final builder = MessageBuilder.prepareMultipartAlternativeMessage(
+      plainText: textBody,
+      htmlText: '<p>$textBody</p>',
+    )
+      ..subject = mail.title
+      ..from = [MailAddress.parse('$userName@$domain')]
+      ..to = [
+        MailAddress.parse(mail.to)
+      ];
+    return builder.buildMimeMessage();
   }
 
   void printMessage(MimeMessage message) {
