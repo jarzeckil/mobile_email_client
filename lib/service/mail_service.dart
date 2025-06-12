@@ -26,6 +26,9 @@ class MailService {
   }
 
   Future<void> start() async {
+    if(connected){
+      await mailClient.disconnect();
+    }
     await connectService();
     await listen();
   }
@@ -35,6 +38,10 @@ class MailService {
       connected = false;
       mailClient.disconnect();
     }
+    userName = '';
+    domain = '';
+    password = '';
+    print('logging out');
   }
 
   Future<void> connectService() async {
@@ -65,17 +72,45 @@ class MailService {
       print('connected');
       await mailClient.selectInbox();
 
-      final db = DatabaseHelper();
-
-
       final messages = await mailClient.fetchMessages(count: 100);
-      messages.forEach(db.insertMail);
+      messages.forEach(DatabaseHelper().insertMail);
 
       mailClient.eventBus.on<MailLoadEvent>().listen((event) {
         print('New message at ${DateTime.now()}:');
-        db.insertMail(event.message);
+        DatabaseHelper().insertMail(event.message);
       });
       await mailClient.startPolling();
+    } on MailException catch (e) {
+      print('High level API failed with $e');
+    }
+  }
+
+  Future<void> loadPrev(int n) async {
+    try {
+      if(!mailClient.isConnected){
+        await mailClient.connect();
+      }
+
+      final from = await DatabaseHelper().getMinUid();
+      print('loading from $from');
+
+      final messages = await mailClient.fetchMessageSequence(MessageSequence.fromRange(from, from-1, isUidSequence: true));
+      messages.forEach(DatabaseHelper().insertMail);
+
+    } on MailException catch (e) {
+      print('High level API failed with $e');
+    }
+  }
+
+  Future<void> loadNew(int n) async {
+    try {
+      if(!mailClient.isConnected){
+        await mailClient.connect();
+      }
+
+      final messages = await mailClient.fetchMessages(count: n);
+      messages.forEach(DatabaseHelper().insertMail);
+
     } on MailException catch (e) {
       print('High level API failed with $e');
     }

@@ -15,7 +15,7 @@ class NavigationDrawer extends StatelessWidget {
 
   Future<void> _logOut() async{
     final prefs = await SharedPreferences.getInstance();
-    await DatabaseHelper().deleteDatabaseFile();
+    await DatabaseHelper().clearDatabase();
 
     await prefs.clear();
     await MailService().stop();
@@ -30,6 +30,7 @@ class NavigationDrawer extends StatelessWidget {
           leading: const Icon(Icons.add),
           title: const Text('Add account'),
           onTap: () {
+            _logOut();
             Navigator.of(context).pushNamed('/addaccount');
           },
         ),

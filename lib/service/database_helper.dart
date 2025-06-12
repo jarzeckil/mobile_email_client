@@ -69,6 +69,15 @@ class DatabaseHelper extends ChangeNotifier {
     }
   }
 
+  Future<void> clearDatabase() async {
+    await _database!.execute(
+      'DELETE FROM $mailTable',
+    );
+    print('database cleared');
+    loadMails();
+
+  }
+
   Future<int> getEntityCount() async {
     final db = await database;
     final String query = "SELECT COUNT(*) AS mailCount FROM $mailTable";
@@ -87,6 +96,17 @@ class DatabaseHelper extends ChangeNotifier {
     final queryResult = await db.rawQuery(query);
 
     final result = queryResult.first['maxUid'];
+
+    return result as int;
+  }
+
+  Future<int> getMinUid() async {
+    final db = await database;
+    final String query = "SELECT MIN($colUid) AS minUid FROM $mailTable";
+
+    final queryResult = await db.rawQuery(query);
+
+    final result = queryResult.first['minUid'];
 
     return result as int;
   }
@@ -131,7 +151,7 @@ class DatabaseHelper extends ChangeNotifier {
     print("loading");
     final data = await getMailMapList(-1);
     _mails =
-        data.map((e) => MailModel.fromMapObject(e)).toList(); //TODO zapytać
+        data.map((e) => MailModel.fromMapObject(e)).toList();
     notifyListeners();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:mobile_email_client/app_imports.dart';
+import 'package:mobile_email_client/service/service_imports.dart';
 import 'widgets/custom_form_field.dart';
 
 class AddAccountPage extends StatefulWidget{
@@ -11,6 +12,8 @@ class AddAccountPage extends StatefulWidget{
 }
 
 class _AddAccountPageState extends State<AddAccountPage> {
+
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -64,18 +67,32 @@ class _AddAccountPageState extends State<AddAccountPage> {
 
                   Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      child: FilledButton(
-                        onPressed: () {
-                          if(_formKey.currentState?.validate() ?? false){
-                            _saveData(usernameController.text, domainController.text, passwordController.text);
-                            Navigator.of(context).pushNamed('/home');
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : FilledButton(
+                      onPressed: () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          setState(() => _isLoading = true);
+                          try {
+                            await _saveData(
+                              usernameController.text,
+                              domainController.text,
+                              passwordController.text,
+                            );
+                            await MailService().start();
+                            if (mounted) {
+                              Navigator.of(context).pushNamed('/home');
+                            }
+                          } finally {
+                            if (mounted) {
+                              setState(() => _isLoading = false);
+                            }
                           }
-                        },
-                        child: const Text('Sign Up'),
-                      ),
+                        }
+                      },
+                      child: const Text('Sign Up'),
                     ),
+
                   ),
                 ],
               ),
