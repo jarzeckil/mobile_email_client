@@ -36,6 +36,13 @@ class _AddAccountPageState extends State<AddAccountPage> {
     await prefs.setString('password', password);
   }
 
+  Future<void> _logOut() async{
+    final prefs = await SharedPreferences.getInstance();
+    await DatabaseHelper().clearDatabase();
+
+    await prefs.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +86,22 @@ class _AddAccountPageState extends State<AddAccountPage> {
                               domainController.text,
                               passwordController.text,
                             );
-                            await MailService().start();
+                            final loggedIn = await MailService().start();
+                            if (!loggedIn && mounted) {
+                              _logOut();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Logowanie nie powiodło się. Sprawdź dane.'),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                              await Future.delayed(const Duration(seconds: 3));
+                              if (mounted) {
+                                Navigator.of(context).pushNamed('/home');
+                              }
+                              return;
+                            }
+
                             if (mounted) {
                               Navigator.of(context).pushNamed('/home');
                             }
@@ -92,8 +114,7 @@ class _AddAccountPageState extends State<AddAccountPage> {
                       },
                       child: const Text('Sign Up'),
                     ),
-
-                  ),
+                  )
                 ],
               ),
             )

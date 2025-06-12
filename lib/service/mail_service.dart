@@ -25,12 +25,13 @@ class MailService {
     password = (storage.get('password')) as String;
   }
 
-  Future<void> start() async {
+  Future<bool> start() async {
     if(connected){
       await mailClient.disconnect();
     }
     await connectService();
-    await listen();
+    final worked = await listen();
+    return worked;
   }
 
   Future<void> stop() async {
@@ -66,7 +67,7 @@ class MailService {
     mailClient = MailClient(account, isLogEnabled: true);
   }
 
-  Future<void> listen() async {
+  Future<bool> listen() async {
     try {
       await mailClient.connect();
       print('connected');
@@ -82,7 +83,9 @@ class MailService {
       await mailClient.startPolling();
     } on MailException catch (e) {
       print('High level API failed with $e');
+      return false;
     }
+    return true;
   }
 
   Future<void> loadPrev(int n) async {
